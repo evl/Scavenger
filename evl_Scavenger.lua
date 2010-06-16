@@ -1,4 +1,4 @@
-local evl_Scavenger = CreateFrame("Frame", nil, UIParent)
+local frame = CreateFrame("Frame", nil, UIParent)
 
 local COLOR_COPPER = "eda55f"
 local COLOR_SILVER = "c7c7cf"
@@ -63,6 +63,6 @@ local onEvent = function(self)
 end
 
 
-evl_Scavenger:SetScript("OnEvent", onEvent)
-evl_Scavenger:RegisterEvent("MERCHANT_SHOW")
+frame:SetScript("OnEvent", onEvent)
 
+frame:RegisterEvent("MERCHANT_SHOW")
