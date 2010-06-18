@@ -26,7 +26,7 @@ local onUpdate = function(self, elapsed)
 	local profit = GetMoney() - lastMoney
 	
 	if profit ~= 0 then
-		self:SetScript("OnUpdate", nil)
+		frame:SetScript("OnUpdate", nil)
 		
 		if profit > 0 then
 			DEFAULT_CHAT_FRAME:AddMessage(string.format("Sold %d trash item%s for %s.", lastCount, lastCount ~= 1 and "s" or "", formatMoney(profit)))
@@ -58,7 +58,7 @@ local onEvent = function(self)
   end
 	
 	if lastCount > 0 then
-		self:SetScript("OnUpdate", onUpdate)
+		frame:SetScript("OnUpdate", onUpdate)
 	end
 end
 
