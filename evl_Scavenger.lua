@@ -1,12 +1,8 @@
-local frame = CreateFrame("Frame", nil, UIParent)
+local frame = CreateFrame("Frame")
 
 local COLOR_COPPER = "eda55f"
 local COLOR_SILVER = "c7c7cf"
 local COLOR_GOLD = "ffd700"
-
-local lastUpdate = 0
-local lastMoney
-local lastCount = 0
 
 local formatMoney = function(value)
 	local gold = value / 10000
@@ -22,23 +18,9 @@ local formatMoney = function(value)
 	end
 end
 
-local onUpdate = function(self, elapsed)
-	local profit = GetMoney() - lastMoney
-	
-	if profit ~= 0 then
-		frame:SetScript("OnUpdate", nil)
-		
-		if profit > 0 then
-			DEFAULT_CHAT_FRAME:AddMessage(string.format("Sold %d trash item%s for %s.", lastCount, lastCount ~= 1 and "s" or "", formatMoney(profit)))
-		end
-	end 
-end
-
-local onEvent = function(self)
-  local bag, slot
-	
-	lastMoney = GetMoney()
-	lastCount = 0
+local onEvent = function()
+	local sellCount = 0
+	local sellAmount = 0
   
 	for bag = 0, 4 do
     if GetContainerNumSlots(bag) > 0 then
@@ -46,19 +28,20 @@ local onEvent = function(self)
 				local link = GetContainerItemLink(bag, slot)
 				
 				if link then
-					local itemName, itemLink, itemRarity = GetItemInfo(link)
+					local _, _, quality, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(link)
 					
-					if itemRarity == 0 then
+					if quality == 0 then
 						UseContainerItem(bag, slot)
-						lastCount = lastCount + GetItemCount(link)
+						sellCount = sellCount + GetItemCount(link)
+						sellAmount = sellAmount + vendorPrice
 					end
 				end
       end
     end
   end
 	
-	if lastCount > 0 then
-		frame:SetScript("OnUpdate", onUpdate)
+	if sellCount > 0 then
+		DEFAULT_CHAT_FRAME:AddMessage(string.format("Selling %d trash item%s for %s.", sellCount, sellCount ~= 1 and "s" or "", formatMoney(sellAmount)))
 	end
 end
 
