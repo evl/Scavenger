@@ -33,7 +33,7 @@ local onEvent = function()
 					
 					if quality == 0 then
 						UseContainerItem(bag, slot)
-						sellCount = sellCount + count(link)
+						sellCount = sellCount + count
 						sellAmount = sellAmount + vendorPrice
 					end
 				end
