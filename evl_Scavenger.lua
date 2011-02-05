@@ -24,15 +24,16 @@ local onEvent = function()
   
 	for bag = 0, 4 do
     if GetContainerNumSlots(bag) > 0 then
-      for slot = 0, GetContainerNumSlots(bag) do
+      for slot = 1, GetContainerNumSlots(bag) do
 				local link = GetContainerItemLink(bag, slot)
 				
 				if link then
 					local _, _, quality, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(link)
+					local _, count = GetContainerItemInfo(bag, slot)
 					
 					if quality == 0 then
 						UseContainerItem(bag, slot)
-						sellCount = sellCount + GetItemCount(link)
+						sellCount = sellCount + count(link)
 						sellAmount = sellAmount + vendorPrice
 					end
 				end
